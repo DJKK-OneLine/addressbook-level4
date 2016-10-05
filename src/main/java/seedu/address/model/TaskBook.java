@@ -1,15 +1,9 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
-<<<<<<< HEAD:src/main/java/seedu/address/model/AddressBook.java
-import seedu.address.model.person.Person;
-import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.person.UniquePersonList;
-=======
 import seedu.address.model.task.Task;
 import seedu.address.model.task.ReadOnlyTask;
 import seedu.address.model.task.UniqueTaskList;
->>>>>>> ec9cac7... attempt 1 rename to tasks:src/main/java/seedu/address/model/TaskBook.java
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -22,19 +16,11 @@ import java.util.stream.Collectors;
  */
 public class TaskBook implements ReadOnlyTaskBook {
 
-<<<<<<< HEAD:src/main/java/seedu/address/model/AddressBook.java
-    private final UniquePersonList persons;
-    private final UniqueTagList tags;
-
-    {
-        persons = new UniquePersonList();
-=======
 	private final UniqueTaskList tasks;
     private final UniqueTagList tags;
 
     {
     	tasks = new UniqueTaskList();
->>>>>>> ec9cac7... attempt 1 rename to tasks:src/main/java/seedu/address/model/TaskBook.java
         tags = new UniqueTagList();
     }
 
@@ -59,18 +45,12 @@ public class TaskBook implements ReadOnlyTaskBook {
     }
 
 //// list overwrite operations
-<<<<<<< HEAD:src/main/java/seedu/address/model/AddressBook.java
-
-    public ObservableList<Person> getPersons() {
-        return persons.getInternalList();
-=======
 //    public ObservableList<Task> getTasks() {
 //        return tasks.getInternalList();
 //    }
 //    
     public ObservableList<Task> getTasks() {
         return tasks.getInternalList();
->>>>>>> ec9cac7... attempt 1 rename to tasks:src/main/java/seedu/address/model/TaskBook.java
     }
 
     public void setTasks(List<Task> tasks) {
@@ -90,11 +70,7 @@ public class TaskBook implements ReadOnlyTaskBook {
         resetData(newData.getTaskList(), newData.getTagList());
     }
 
-<<<<<<< HEAD:src/main/java/seedu/address/model/AddressBook.java
-//// person-level operations
-=======
 //// task and task-level operations
->>>>>>> ec9cac7... attempt 1 rename to tasks:src/main/java/seedu/address/model/TaskBook.java
 
     /**
      * Adds a person to the address book.
@@ -103,9 +79,9 @@ public class TaskBook implements ReadOnlyTaskBook {
      *
      * @throws UniquePersonList.DuplicatePersonException if an equivalent person already exists.
      */
-    public void addPerson(Person p) throws UniquePersonList.DuplicatePersonException {
+    public void addTask(Task p) throws UniqueTaskList.DuplicateTaskException {
         syncTagsWithMasterList(p);
-        persons.add(p);
+        tasks.add(p);
     }
 
     /**
@@ -113,15 +89,9 @@ public class TaskBook implements ReadOnlyTaskBook {
      *  - exists in the master list {@link #tags}
      *  - points to a Tag object in the master list
      */
-<<<<<<< HEAD:src/main/java/seedu/address/model/AddressBook.java
-    private void syncTagsWithMasterList(Person person) {
-        final UniqueTagList personTags = person.getTags();
-        tags.mergeFrom(personTags);
-=======
     private void syncTagsWithMasterList(Task task) {
         final UniqueTagList taskTags = task.getTags();
         tags.mergeFrom(taskTags);
->>>>>>> ec9cac7... attempt 1 rename to tasks:src/main/java/seedu/address/model/TaskBook.java
 
         // Create map with values = tag object references in the master list
         final Map<Tag, Tag> masterTagObjects = new HashMap<>();
@@ -134,7 +104,7 @@ public class TaskBook implements ReadOnlyTaskBook {
         for (Tag tag : taskTags) {
             commonTagReferences.add(masterTagObjects.get(tag));
         }
-        person.setTags(new UniqueTagList(commonTagReferences));
+        task.setTags(new UniqueTagList(commonTagReferences));
     }
 
 //    public boolean removePerson(ReadOnlyTask key) throws UniqueTaskList.TaskNotFoundException {
