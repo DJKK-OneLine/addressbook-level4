@@ -1,7 +1,5 @@
 package seedu.address.model.task;
 
-import javax.lang.model.element.Name;
-
 import seedu.address.model.tag.UniqueTagList;
 
 /**
