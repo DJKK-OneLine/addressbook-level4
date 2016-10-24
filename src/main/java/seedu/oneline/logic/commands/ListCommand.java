@@ -10,16 +10,34 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Listed all tasks";
 
-    public ListCommand() {}
-    
-    public ListCommand(String args) {}
+    public static final String MESSAGE_INVALID = "Argument given is invalid";
+
+    public String listBy;
+
+    public ListCommand() {
+        this.listBy = "";
+    }
+
+    public ListCommand(String args) {
+        this.listBy = args;
+    }
 
     @Override
     public CommandResult execute() {
-        model.updateFilteredListToShowAllNotDone();
+        switch (listBy) {
+        case "":
+            model.updateFilteredListToShowAllNotDone();
+            break;
+        case "done":
+            model.updateFilteredListToShowAll();
+            break;
+        default:
+            return new CommandResult(MESSAGE_INVALID);
+        }
+
         return new CommandResult(MESSAGE_SUCCESS);
     }
-    
+
     @Override
     public boolean canUndo() {
         return true;
