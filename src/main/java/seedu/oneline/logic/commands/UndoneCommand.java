@@ -47,26 +47,26 @@ public class UndoneCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        
-        UnmodifiableObservableList<ReadOnlyTask> lastShownList = model.getFilteredTaskList();
+//        model.updateFilteredListToShowAllNotDone();
+        UnmodifiableObservableList<ReadOnlyTask> undoneList = model.getFilteredTaskList();
 
-        if (lastShownList.size() < targetIndex) {
+        if (undoneList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
         }
 
-        ReadOnlyTask taskToDone = lastShownList.get(targetIndex - 1);
+        ReadOnlyTask taskNotDone = undoneList.get(targetIndex - 1);
 
-        if(taskToDone.isCompleted()) {
-            return new CommandResult(String.format(MESSAGE_TASK_ALR_NOT_DONE, taskToDone));
+        if(!taskNotDone.isCompleted()) {
+            return new CommandResult(String.format(MESSAGE_TASK_ALR_NOT_DONE, taskNotDone));
         } else {
             try {
-                model.doneTask(targetIndex - 1);
+                model.undoneTask(targetIndex - 1);
             } catch (TaskNotFoundException pnfe) {
                 assert false : "The target task cannot be missing";
             }
 
-            return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, taskToDone));
+            return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, taskNotDone));
         }
     }
 }

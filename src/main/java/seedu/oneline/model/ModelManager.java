@@ -114,7 +114,15 @@ public class ModelManager extends ComponentManager implements Model {
         done.setCompleted(true);
         indicateTaskBookChanged();
         updateFilteredListToShowAllNotDone();
-//        addTaskToFilter(done);
+    }
+    
+    @Override
+    public synchronized void undoneTask(int index) throws TaskNotFoundException {
+        updateFilteredListToShowAllDone();
+        Task done = filteredTasks.get(index);
+        done.setCompleted(false);
+        indicateTaskBookChanged();
+        updateFilteredListToShowAllNotDone();
     }
 
     //=========== Filtered Task List Accessors ===============================================================
@@ -160,24 +168,6 @@ public class ModelManager extends ComponentManager implements Model {
     private void updateFilteredTaskList(Expression expression) {
         filteredTasks.setPredicate(expression::satisfies);
     }
-    
-//    private void addTaskToFilter(ReadOnlyTask task) {
-//        final Predicate<? super Task> oldPredicate = filteredTasks.getPredicate();
-//        Qualifier newQualifier = new Qualifier() {
-//
-//            @Override
-//            public boolean run(ReadOnlyTask person) {
-//                return oldPredicate.test(new Task(person)) && !person.equals(task);
-//            }
-//            
-//            @Override
-//            public String toString() {
-//                return oldPredicate.toString() + "&task!=" + task.toString();
-//            }
-//        };
-//        PredicateExpression newPredicate = new PredicateExpression(newQualifier);
-//        updateFilteredTaskList(newPredicate);
-//    }
 
     //========== Inner classes/interfaces used for filtering ==================================================
 
