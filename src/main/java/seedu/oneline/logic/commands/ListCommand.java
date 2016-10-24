@@ -1,5 +1,12 @@
 package seedu.oneline.logic.commands;
 
+import java.util.Iterator;
+import java.util.Set;
+
+import seedu.oneline.commons.core.Messages;
+import seedu.oneline.commons.exceptions.IllegalCmdArgsException;
+import seedu.oneline.commons.exceptions.IllegalValueException;
+import seedu.oneline.logic.parser.Parser;
 
 /**
  * Lists all tasks in the task book to the user.
@@ -15,17 +22,27 @@ public class ListCommand extends Command {
     public String listBy;
 
     public ListCommand() {
-        this.listBy = "";
+        this.listBy = " ";
     }
 
-    public ListCommand(String args) {
-        this.listBy = args;
+    public ListCommand(String args) throws IllegalCmdArgsException {
+        args = args.trim();
+        if(args.isEmpty()){
+            this.listBy = " ";
+        } else {
+            Set<String> keywords = Parser.getKeywordsFromArgs(args);
+            if (keywords == null) {
+                throw new IllegalCmdArgsException(Messages.getInvalidCommandFormatMessage(MESSAGE_INVALID));
+            }
+            Iterator<String> iter = keywords.iterator();
+            this.listBy = iter.next();
+        }
     }
 
     @Override
     public CommandResult execute() {
         switch (listBy) {
-        case "":
+        case " ":
             model.updateFilteredListToShowAllNotDone();
             break;
         case "done":
