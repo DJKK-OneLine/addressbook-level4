@@ -29,7 +29,7 @@ public class ListCommand extends Command {
             model.updateFilteredListToShowAllNotDone();
             break;
         case "done":
-            model.updateFilteredListToShowAll();
+            model.updateFilteredListToShowAllDone();
             break;
         default:
             return new CommandResult(MESSAGE_INVALID);

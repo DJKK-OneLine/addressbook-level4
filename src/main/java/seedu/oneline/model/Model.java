@@ -39,6 +39,9 @@ public interface Model {
     /** Updates the filter of the filtered task list to show all tasks */
     void updateFilteredListToShowAll();
     
+    /** Updates the filter of the filtered task list to show all tasks that are done */
+    void updateFilteredListToShowAllDone();
+    
     /** Updates the filter of the filtered task list to show all tasks that are not done */
     void updateFilteredListToShowAllNotDone();
 
@@ -53,6 +56,8 @@ public interface Model {
     
     /** Reverts to the state before the last undone*/
     void redo() throws StateNonExistentException;
+
+
 
 
 

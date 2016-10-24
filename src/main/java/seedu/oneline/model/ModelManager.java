@@ -130,6 +130,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     @Override
+    public void updateFilteredListToShowAllDone() {
+        filteredTasks.setPredicate(null);
+        filteredTasks.setPredicate(getDonePredicate());
+//        filteredTasks.setPredicate(getNotDonePredicate());
+    }
+    
+    @Override
     public void updateFilteredListToShowAllNotDone() {
         Predicate<? super Task> currentPredicate = filteredTasks.getPredicate();
         filteredTasks.setPredicate(null);
