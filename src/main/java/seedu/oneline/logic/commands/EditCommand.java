@@ -88,7 +88,7 @@ public class EditCommand extends Command {
             return new CommandResult(e.getMessage());
         }
         
-        Task newTask = new Task(newName, newStartTime, newEndTime, newDeadline, newRecurrence, newTags);
+        Task newTask = new Task(newName, newStartTime, newEndTime, newDeadline, newRecurrence, newTags, false);
         
         if (model.getTaskBook().getTaskList().contains(newTask)) {
             return new CommandResult(MESSAGE_DUPLICATE_TASK);
