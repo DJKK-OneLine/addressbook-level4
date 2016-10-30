@@ -4,7 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import seedu.oneline.commons.exceptions.IllegalCmdArgsException;
+import seedu.oneline.logic.Logic;
+import seedu.oneline.logic.LogicManager;
+import seedu.oneline.model.Model;
+import seedu.oneline.model.ModelManager;
 import seedu.oneline.model.TaskBook;
+import seedu.oneline.model.UserPrefs;
 import seedu.oneline.model.task.UniqueTaskList.DuplicateTaskException;
 
 /**
@@ -22,39 +27,26 @@ public class LoadCommand extends Command {
     private static final Map<String, TaskBook> books;
     
     static {
-        TaskBook book0 = new TaskBook();
-        try {
-            for (int i = 0; i < 10; i++) {
-                book0.addTask(GenerateCommand.generateTask());
-            }
-        } catch (DuplicateTaskException e) {
-        }
-        TaskBook book1 = new TaskBook();
-        try {
-            for (int i = 0; i < 10; i++) {
-                book1.addTask(GenerateCommand.generateTask());
-            }
-        } catch (DuplicateTaskException e) {
-        }
-        TaskBook book2 = new TaskBook();
-        try {
-            for (int i = 0; i < 10; i++) {
-                book2.addTask(GenerateCommand.generateTask());
-            }
-        } catch (DuplicateTaskException e) {
-        }
-        TaskBook book3 = new TaskBook();
-        try {
-            for (int i = 0; i < 10; i++) {
-                book3.addTask(GenerateCommand.generateTask());
-            }
-        } catch (DuplicateTaskException e) {
-        }
         books = new HashMap<String, TaskBook>();
-        books.put("0", book0);
-        books.put("1", book1);
-        books.put("2", book2);
-        books.put("3", book3);
+        books.put("name here", 
+                    getTaskBook(new String[] {
+                            "add meeting with boss .from wed 2pm .to wed 3pm #work", 
+                            "add dinner with Becky .from mon 6pm .to mon 9pm #decky", 
+                            "add book flight to Japan .due tmr #decky", 
+                            "add send presentation slides to Ivan .due tmr #work", 
+                            "add get client reports from Justin #work", 
+                            "add buy new shoes", 
+                            "add pick up suit from dry cleaners .due today", 
+                            "add call mum #fam", 
+                            "add confirm final website design .due today #work", 
+                            "add brunch with sis .from sat 10am .to sat 1pm #fam", 
+                            "add watch The Accountant", 
+                            "add get groceries .due wed", 
+                            "add try out new coffee place", 
+                            "add buy roses for Becky #decky",  
+                            "add check out new macbook pro"    
+                    })
+                );
     }
     
     public final String key;
@@ -74,5 +66,16 @@ public class LoadCommand extends Command {
     public CommandResult execute() {
         model.resetData(books.get(key));
         return new CommandResult(MESSAGE_SUCCESS);
+    }
+    
+    public static TaskBook getTaskBook(String[] cmds) {
+        Model m = new ModelManager(new TaskBook(), new UserPrefs());
+        Logic l = new LogicManager(m, null);
+        for (int i = 0; i < cmds.length; i++) {
+            System.out.println("Executing: " + cmds[i]);
+            CommandResult r = l.execute(cmds[i]);
+            System.out.println(r.feedbackToUser);
+        }
+        return new TaskBook(m.getTaskBook());
     }
 }
