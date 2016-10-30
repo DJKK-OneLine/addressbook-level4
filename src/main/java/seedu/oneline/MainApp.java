@@ -16,6 +16,7 @@ import seedu.oneline.commons.util.ConfigUtil;
 import seedu.oneline.commons.util.StringUtil;
 import seedu.oneline.logic.Logic;
 import seedu.oneline.logic.LogicManager;
+import seedu.oneline.logic.commands.LoadCommand;
 import seedu.oneline.model.*;
 import seedu.oneline.storage.Storage;
 import seedu.oneline.storage.StorageManager;
@@ -57,13 +58,16 @@ public class MainApp extends Application {
 
         initLogging(config);
 
-        model = initModelManager(storage, userPrefs);
+//        model = initModelManager(storage, userPrefs);`
+        model = new ModelManager(new TaskBook(), userPrefs);
 
         logic = new LogicManager(model, storage);
 
         ui = new UiManager(logic, config, userPrefs);
 
         initEventsCenter();
+        
+        LoadCommand.init();
     }
 
     private String getApplicationParameter(String parameterName){

@@ -40,21 +40,7 @@ public class SaveCommand extends Command {
     @Override
     public CommandResult execute() {
         Optional<Path> path = getValidPath(storageLocation);
-        if (!path.isPresent()) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(String.format(MESSAGE_SET_STORAGE_FAILURE_PATH_INVALID, storageLocation));
-        } else {
-            Path actualPath = path.get();
-            if (!isDirectory(actualPath)) {
-                return new CommandResult(String.format(MESSAGE_SET_STORAGE_FAILURE_NOT_DIRECTORY, actualPath.toAbsolutePath()));
-            } else if (!isReadable(actualPath)) {
-                return new CommandResult(String.format(MESSAGE_SET_STORAGE_FAILURE_CANNOT_READ, actualPath.toAbsolutePath()));
-            } else if (!isWritable(actualPath)) {
-                return new CommandResult(String.format(MESSAGE_SET_STORAGE_FAILURE_CANNOT_WRITE, actualPath.toAbsolutePath()));
-            }
-        }
         Path actualPath = path.get();
-        EventsCenter.getInstance().post(new StorageLocationChangedEvent(storageLocation));
         return new CommandResult(String.format(MESSAGE_SET_STORAGE_SUCCESS, actualPath.toAbsolutePath()));    
     }
 

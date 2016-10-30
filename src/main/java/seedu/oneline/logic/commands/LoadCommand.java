@@ -104,6 +104,31 @@ public class LoadCommand extends Command {
                 })
             );
         
+        books.put("k", 
+                getTaskBook(new String[] {
+                        "add meeting with boss .from wed 2pm .to wed 3pm #work", 
+                        "add dinner with Becky .from mon 6pm .to mon 9pm #decky", 
+                        "add book flight to Japan .due tmr #decky", 
+                        "add send presentation slides to Ivan .due tmr #work", 
+                        "add get client reports from Justin #work",  
+                        "add pick up suit from dry cleaners .due today #chore",
+                        "add call mum #fam",    
+                        "add confirm final website design .due today #work", 
+                        "add brunch with sis .from sat 10am .to sat 1pm #fam", 
+                        "add watch The Accountant .from 5pm .to 8pm", 
+                        "add get groceries .due wed #chore", 
+                        "add buy roses for Becky #decky",  
+                        "add check out new macbook pro",
+                        "add repair storage room light bulb #repair",
+                        "add repair relationship with son #fam",
+                        "edit #work green",
+                        "edit #decky red",
+                        "edit #chore purple",
+                        "edit #fam blue",
+                        "edit #repair yellow"
+                })
+            );
+        
     }
     
     public final String key;
@@ -136,4 +161,6 @@ public class LoadCommand extends Command {
         }
         return new TaskBook(m.getTaskBook());
     }
+    
+    public static void init() {}
 }

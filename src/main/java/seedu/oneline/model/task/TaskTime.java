@@ -3,6 +3,7 @@ package seedu.oneline.model.task;
 
 import seedu.oneline.commons.exceptions.IllegalValueException;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -101,9 +102,10 @@ public class TaskTime implements Comparable<TaskTime> {
         return DateUtils.toCalendar(value);
     }
     
-    @Override
     public String toString() {
-        return value == null ? "" : value.toString();
+        if (value == null) { return ""; }
+        SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM ''yy, hh:mm aaa");
+        return df.format(value);
     }
 
     @Override
