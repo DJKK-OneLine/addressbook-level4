@@ -63,7 +63,7 @@ public class UndoneCommand extends Command {
         ReadOnlyTask oldTask = lastShownList.get(targetIndex - 1);
         Task newTask = oldTask.markUndone(oldTask);
         try {
-            model.replaceTask(oldTask, newTask);
+            model.replaceUndoneTask(oldTask, newTask);
             EventsCenter.getInstance().post(new ShowAllViewEvent());
             return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, newTask));
         } catch (UniqueTaskList.TaskNotFoundException e) {
