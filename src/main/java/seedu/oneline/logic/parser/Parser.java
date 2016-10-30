@@ -68,6 +68,7 @@ public class Parser {
         commands.put(UndoCommand.COMMAND_WORD.toLowerCase(), UndoCommand.class);
         commands.put(RedoCommand.COMMAND_WORD.toLowerCase(), RedoCommand.class);
         commands.put(GenerateCommand.COMMAND_WORD.toLowerCase(), GenerateCommand.class);
+        commands.put(LoadCommand.COMMAND_WORD.toLowerCase(), LoadCommand.class);
         return commands;
     }
     
