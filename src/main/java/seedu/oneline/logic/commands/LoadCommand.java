@@ -1,5 +1,8 @@
 package seedu.oneline.logic.commands;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import seedu.oneline.commons.exceptions.IllegalCmdArgsException;
 import seedu.oneline.model.TaskBook;
 import seedu.oneline.model.task.UniqueTaskList.DuplicateTaskException;
@@ -16,7 +19,7 @@ public class LoadCommand extends Command {
     public static final String MESSAGE_INVALID = "Argument given is invalid. \n" +
                                                 "Supported formats: l [1/2/...]";
     
-    private static final TaskBook[] books;
+    private static final Map<String, TaskBook> books;
     
     static {
         TaskBook book0 = new TaskBook();
@@ -47,28 +50,29 @@ public class LoadCommand extends Command {
             }
         } catch (DuplicateTaskException e) {
         }
-        books = new TaskBook[] {
-                book0, book1, book2, book3
-        };
+        books = new HashMap<String, TaskBook>();
+        books.put("0", book0);
+        books.put("1", book1);
+        books.put("2", book2);
+        books.put("3", book3);
     }
     
-    public final int index;
+    public final String key;
 
-    public LoadCommand(int index) throws IllegalCmdArgsException {
-        if (index < 0 || index >= books.length) {
-            throw new IllegalCmdArgsException("Index out of bounds");
+    public LoadCommand(String key) throws IllegalCmdArgsException {
+        if (!books.containsKey(key)) {
+            throw new IllegalCmdArgsException("Key " + key + " not found");
         }
-        this.index = index;
+        this.key = key;
     }
 
     public static LoadCommand createFromArgs(String args) throws IllegalCmdArgsException {
-        int index = Integer.parseInt(args.trim());
-        return new LoadCommand(index);
+        return new LoadCommand(args.trim());
     }
     
     @Override
     public CommandResult execute() {
-        model.resetData(books[index]);
+        model.resetData(books.get(key));
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
