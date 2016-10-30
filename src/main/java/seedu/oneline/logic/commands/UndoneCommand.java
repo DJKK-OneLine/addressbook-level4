@@ -1,8 +1,10 @@
 //@@author A0121657H
 package seedu.oneline.logic.commands;
 
+import seedu.oneline.commons.core.EventsCenter;
 import seedu.oneline.commons.core.Messages;
 import seedu.oneline.commons.core.UnmodifiableObservableList;
+import seedu.oneline.commons.events.ui.ShowAllViewEvent;
 import seedu.oneline.commons.exceptions.IllegalCmdArgsException;
 import seedu.oneline.commons.exceptions.IllegalValueException;
 import seedu.oneline.logic.parser.Parser;
@@ -50,31 +52,26 @@ public class UndoneCommand extends Command {
 
     @Override
     public CommandResult execute() {
-
+        assert model != null;
+        
         UnmodifiableObservableList<ReadOnlyTask> lastShownList = model.getFilteredTaskList();
 
         if (lastShownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
         }
-
-        ReadOnlyTask taskToUndone = lastShownList.get(targetIndex - 1);
-        Task undoneTask = null;
-        undoneTask = taskToUndone.markUndone(taskToUndone);
-
-        if(!taskToUndone.isCompleted()) {
-            return new CommandResult(String.format(MESSAGE_TASK_ALR_NOT_DONE, taskToUndone));
-        } else {
-            try {
-                model.replaceUndoneTask(taskToUndone, undoneTask);
-            } catch (TaskNotFoundException pnfe) {
-                assert false : "The target task cannot be missing";
-            } catch (UniqueTaskList.DuplicateTaskException e) {
-                assert false : "The task should not have the same completed status as before";
-            }
-
-            return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, taskToUndone));
+        ReadOnlyTask oldTask = lastShownList.get(targetIndex - 1);
+        Task newTask = oldTask.markUndone(oldTask);
+        try {
+            model.replaceTask(oldTask, newTask);
+            EventsCenter.getInstance().post(new ShowAllViewEvent());
+            return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, newTask));
+        } catch (UniqueTaskList.TaskNotFoundException e) {
+            assert false : "The target task cannot be missing";
+        } catch (UniqueTaskList.DuplicateTaskException e) {
+            assert false : "The update task should not already exist";
         }
+        return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, newTask.toString()));
     }
 
     @Override

@@ -52,32 +52,26 @@ public class DoneCommand extends Command {
 
     @Override
     public CommandResult execute() {
-
+        assert model != null;
+        
         UnmodifiableObservableList<ReadOnlyTask> lastShownList = model.getFilteredTaskList();
 
         if (lastShownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
         }
-
-        ReadOnlyTask taskToDone = lastShownList.get(targetIndex - 1);
-        Task doneTask = null;
-        doneTask = taskToDone.markDone(taskToDone);
-        EventsCenter.getInstance().post(new ShowAllViewEvent());
-        
-        if(taskToDone.isCompleted()) {
-            return new CommandResult(String.format(MESSAGE_TASK_ALR_DONE, taskToDone));
-        } else {
-            try {
-                model.replaceTask(taskToDone, doneTask);
-            } catch (TaskNotFoundException pnfe) {
-                assert false : "The target task cannot be missing";
-            } catch (UniqueTaskList.DuplicateTaskException e) {
-                assert false : "The task should not have the same completed status as before";
-            }
-
-            return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, taskToDone));
+        ReadOnlyTask oldTask = lastShownList.get(targetIndex - 1);
+        Task newTask = oldTask.markDone(oldTask);
+        try {
+            model.replaceTask(oldTask, newTask);
+            EventsCenter.getInstance().post(new ShowAllViewEvent());
+            return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, newTask));
+        } catch (UniqueTaskList.TaskNotFoundException e) {
+            assert false : "The target task cannot be missing";
+        } catch (UniqueTaskList.DuplicateTaskException e) {
+            assert false : "The update task should not already exist";
         }
+        return new CommandResult(String.format(MESSAGE_DONE_TASK_SUCCESS, newTask.toString()));
     }
     
     @Override
