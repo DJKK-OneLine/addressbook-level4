@@ -125,7 +125,12 @@ public class LoadCommand extends Command {
                         "edit #decky red",
                         "edit #chore purple",
                         "edit #fam blue",
-                        "edit #repair yellow"
+                        "edit #repair yellow",
+                        "done 1",
+                        "done 1",
+                        "done 5",
+                        "done 5",
+                        "done 5"
                 })
             );
         
